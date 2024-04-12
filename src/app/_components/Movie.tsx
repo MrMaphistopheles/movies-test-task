@@ -7,37 +7,47 @@ import Star from "~/assets/svg/Star";
 import Edit from "../../assets/svg/Edit";
 import TrashBin from "../../assets/svg/TrashBin";
 import { useRouter } from "next/navigation";
+import LoadingSpiner from "./LoadingSpiner";
 
 export default function Movie({ id }: { id: string }) {
+  // Get the router instance
   const router = useRouter();
 
-  const { data, refetch } = api.movie.movie.useQuery({ id: parseInt(id) });
+  // Fetch the movie data
+  const { data, refetch, isLoading } = api.movie.movie.useQuery({
+    id: parseInt(id),
+  });
 
+  // Delete the movie data
   const { mutate, isPending, isError } = api.movie.deleteMovie.useMutation({
     onSuccess: async () => {
       router.push("/");
     },
   });
-
+  // Toggle the favorite status of the movie
   const toggleFavorite = api.movie.toggleFavorite.useMutation({
     onSuccess: async () => {
       await refetch();
     },
   });
-
+  // Handle the deletion of the movie
   const handleDeletion = (id: number | undefined) => {
     if (!id) return;
     mutate({ id });
   };
-
+  // Handle the toggling of the favorite status of the movie
   const handleTogle = (id: number | undefined) => {
     if (!id) return;
 
     toggleFavorite.mutate({ id });
   };
 
+  if (isLoading) {
+    return <LoadingSpiner />; // match better way to create a loading sckeleton than the spinner but is't test project
+  }
+
   return (
-    <div className="flex h-[98dvh] w-full flex-col items-center justify-between px-4 py-5  text-lg text-white">
+    <div className="flex h-[100dvh] w-full flex-col items-center justify-between px-4 py-5  text-lg text-white">
       <div className="flex w-full max-w-[30em] flex-col items-center justify-start gap-4 overflow-auto py-3">
         <Image
           src={

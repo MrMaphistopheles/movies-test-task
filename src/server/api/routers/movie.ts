@@ -3,11 +3,19 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const moviesRouter = createTRPCRouter({
-  movies: publicProcedure.query(async ({ ctx }) => {
-    return await ctx.db.movie.findMany({
-      orderBy: { id: "asc" },
-    });
-  }),
+  movies: publicProcedure
+    .input(z.object({ title: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.movie.findMany({
+        orderBy: { id: "asc" },
+        where: {
+          title: {
+            contains: input.title,
+            mode: "insensitive",
+          },
+        },
+      });
+    }),
   movie: publicProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ ctx, input }) => {

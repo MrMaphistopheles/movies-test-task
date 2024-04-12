@@ -4,15 +4,23 @@
 
 import { api } from "~/trpc/react";
 import Card from "./_components/Card";
+import NavBar from "./_components/NavBar";
+import { useState } from "react";
 
 export default function Home() {
-  const { data, refetch } = api.movie.movies.useQuery();
+  const [search, setSearch] = useState("");
+
+  // Fetch the movies data
+  const { data, refetch } = api.movie.movies.useQuery({ title: search });
 
   return (
-    <div className="flex h-full w-full flex-wrap items-center justify-center gap-4">
-      {data?.map((movie) => (
-        <Card key={movie.id} movie={movie} refetch={refetch} />
-      ))}
-    </div>
+    <>
+      <NavBar setSearch={setSearch} />
+      <div className="flex h-full w-full flex-wrap items-center justify-center gap-4">
+        {data?.map((movie) => (
+          <Card key={movie.id} movie={movie} refetch={refetch} />
+        ))}
+      </div>
+    </>
   );
 }

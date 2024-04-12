@@ -4,7 +4,6 @@ import GlassBtn from "./ui/GlassBtn";
 import Star from "../../assets/svg/Star";
 import Link from "next/link";
 import { api } from "~/trpc/react";
-import { CircularProgress } from "@nextui-org/react";
 
 export default function Card({
   movie,
@@ -13,23 +12,27 @@ export default function Card({
   movie: Movie | undefined | null;
   refetch: () => void;
 }) {
+  // Fetch the movie data
   const { mutate, isPending, isError } = api.movie.deleteMovie.useMutation({
     onSuccess: () => {
       refetch();
     },
   });
 
+  // Toggle the favorite status of the movie
   const toggleFavorite = api.movie.toggleFavorite.useMutation({
     onSuccess: () => {
       refetch();
     },
   });
 
+  // Handle the deletion of the movie
   const handleDeletion = (id: number | undefined) => {
     if (!id) return;
     mutate({ id });
   };
 
+  // Handle the toggling of the favorite status of the movie
   const handleTogle = (id: number | undefined) => {
     if (!id) return;
     toggleFavorite.mutate({ id });

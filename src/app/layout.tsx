@@ -23,10 +23,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable} bg-black`}>
+      <body className={`font-sans ${inter.variable} h-[100dvh] bg-black`}>
         <Providers>
           <main className="flex flex-col items-start justify-center ">
-            <nav>search</nav>
             <TRPCReactProvider>{children}</TRPCReactProvider>
           </main>
         </Providers>
