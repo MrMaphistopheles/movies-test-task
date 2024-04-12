@@ -95,8 +95,8 @@ export const moviesRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const actors = input.actors.split(" ");
-      const genere = input.genre.split(" ");
+      const actors = input.actors.split(",");
+      const genere = input.genre.split(",");
 
       return await ctx.db.movie.update({
         where: { id: input.id },
