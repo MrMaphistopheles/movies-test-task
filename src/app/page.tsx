@@ -16,6 +16,7 @@ export default function Home() {
   return (
     <>
       <NavBar setSearch={setSearch} />
+
       <div className="flex h-full w-full flex-wrap items-center justify-center gap-4">
         {data?.map((movie) => (
           <Card key={movie.id} movie={movie} refetch={refetch} />

@@ -48,4 +48,68 @@ export const moviesRouter = createTRPCRouter({
         data: { favorite: !movie.favorite },
       });
     }),
+
+  addMovie: publicProcedure
+    .input(
+      z.object({
+        title: z.string(),
+        description: z.string(),
+        image: z.string(),
+        releaseDate: z.string(),
+        rating: z.number(),
+        genre: z.string(),
+        actors: z.string(),
+        director: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const actors = input.actors.split(" ");
+      const genere = input.genre.split(" ");
+
+      return await ctx.db.movie.create({
+        data: {
+          title: input.title,
+          description: input.description,
+          image: input.image,
+          releaseDate: input.releaseDate,
+          rating: input.rating,
+          actors: actors,
+          genre: genere,
+          director: input.director,
+        },
+      });
+    }),
+
+  editMovie: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        title: z.string(),
+        description: z.string(),
+        image: z.string(),
+        releaseDate: z.string(),
+        rating: z.number(),
+        genre: z.string(),
+        actors: z.string(),
+        director: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const actors = input.actors.split(" ");
+      const genere = input.genre.split(" ");
+
+      return await ctx.db.movie.update({
+        where: { id: input.id },
+        data: {
+          title: input.title,
+          description: input.description,
+          image: input.image,
+          releaseDate: input.releaseDate,
+          rating: input.rating,
+          actors: actors,
+          genre: genere,
+          director: input.director,
+        },
+      });
+    }),
 });

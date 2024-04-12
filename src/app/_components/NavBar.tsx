@@ -4,6 +4,7 @@ import type { Dispatch, SetStateAction } from "react";
 import { SearchIcon } from "~/assets/svg/SearchIcon";
 import GlassBtn from "./ui/GlassBtn";
 import Add from "~/assets/svg/Add";
+import Link from "next/link";
 
 export default function NavBar({
   setSearch,
@@ -11,7 +12,7 @@ export default function NavBar({
   setSearch?: Dispatch<SetStateAction<string>>;
 }) {
   return (
-    <nav className="flex w-full items-center justify-center gap-2 py-4 text-white">
+    <nav className="flex w-full items-center justify-center gap-3 py-4 text-white">
       <Input
         label="Search"
         isClearable
@@ -24,9 +25,11 @@ export default function NavBar({
           <SearchIcon className="pointer-events-none mb-0.5 flex-shrink-0 text-black/50 text-slate-400 dark:text-white/90" />
         }
       />
-      <GlassBtn>
-        <Add />
-      </GlassBtn>
+      <Link href="/add-movie">
+        <GlassBtn>
+          <Add />
+        </GlassBtn>
+      </Link>
     </nav>
   );
 }

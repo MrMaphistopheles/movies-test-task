@@ -8,6 +8,7 @@ import Edit from "../../assets/svg/Edit";
 import TrashBin from "../../assets/svg/TrashBin";
 import { useRouter } from "next/navigation";
 import LoadingSpiner from "./LoadingSpiner";
+import Link from "next/link";
 
 export default function Movie({ id }: { id: string }) {
   // Get the router instance
@@ -106,9 +107,12 @@ export default function Movie({ id }: { id: string }) {
             )}
           </Button>
           <div className="flex gap-2">
-            <GlassBtn>
-              <Edit /> Edit
-            </GlassBtn>
+            <Link href={`/edit/${data?.id}`}>
+              <GlassBtn>
+                <Edit /> Edit
+              </GlassBtn>
+            </Link>
+
             <GlassBtn onClick={() => handleTogle(data?.id)}>
               <Star color={data?.favorite === true ? "#ffcc00" : "white"} />
             </GlassBtn>
