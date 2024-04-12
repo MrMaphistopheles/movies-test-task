@@ -6,13 +6,38 @@ import GlassBtn from "./ui/GlassBtn";
 import Star from "~/assets/svg/Star";
 import Edit from "../../assets/svg/Edit";
 import TrashBin from "../../assets/svg/TrashBin";
+import { useRouter } from "next/navigation";
 
 export default function Movie({ id }: { id: string }) {
-  const { data } = api.movie.movie.useQuery({ id: parseInt(id) });
-  console.log(data);
+  const router = useRouter();
+
+  const { data, refetch } = api.movie.movie.useQuery({ id: parseInt(id) });
+
+  const { mutate, isPending, isError } = api.movie.deleteMovie.useMutation({
+    onSuccess: async () => {
+      router.push("/");
+    },
+  });
+
+  const toggleFavorite = api.movie.toggleFavorite.useMutation({
+    onSuccess: async () => {
+      await refetch();
+    },
+  });
+
+  const handleDeletion = (id: number | undefined) => {
+    if (!id) return;
+    mutate({ id });
+  };
+
+  const handleTogle = (id: number | undefined) => {
+    if (!id) return;
+
+    toggleFavorite.mutate({ id });
+  };
 
   return (
-    <div className="flex h-[97dvh] w-full flex-col items-center justify-between px-4 py-5  text-lg text-white">
+    <div className="flex h-[98dvh] w-full flex-col items-center justify-between px-4 py-5  text-lg text-white">
       <div className="flex w-full max-w-[30em] flex-col items-center justify-start gap-4 overflow-auto py-3">
         <Image
           src={
@@ -49,19 +74,37 @@ export default function Movie({ id }: { id: string }) {
         </span>
       </div>
 
-      <div className="glass flex w-full max-w-[30em] items-center justify-between rounded-xl p-3">
-        <Button className="bg-red-600 text-white" size="md">
-          <TrashBin /> Delete
-        </Button>
-        <div className="flex gap-2">
-          <GlassBtn>
-            <Edit /> Edit
-          </GlassBtn>
-          <GlassBtn>
-            <Star color="#ffd500" />
-          </GlassBtn>
+      {isError || toggleFavorite.isError ? (
+        <div className="flex w-full max-w-[30em] items-center justify-between rounded-xl bg-red-600 p-3">
+          <p className="text-white">An error occurred</p>
+          <GlassBtn onClick={() => refetch()}>Retry</GlassBtn>
         </div>
-      </div>
+      ) : (
+        <div className="glass flex w-full max-w-[30em] items-center justify-between rounded-xl p-3">
+          <Button
+            onClick={() => handleDeletion(data?.id)}
+            className="bg-red-600 text-white"
+            size="md"
+            aria-label="delete button"
+          >
+            {isPending ? (
+              "Deleting..."
+            ) : (
+              <div className="flex items-center justify-center">
+                <TrashBin /> Delete
+              </div>
+            )}
+          </Button>
+          <div className="flex gap-2">
+            <GlassBtn>
+              <Edit /> Edit
+            </GlassBtn>
+            <GlassBtn onClick={() => handleTogle(data?.id)}>
+              <Star color={data?.favorite === true ? "#ffcc00" : "white"} />
+            </GlassBtn>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
