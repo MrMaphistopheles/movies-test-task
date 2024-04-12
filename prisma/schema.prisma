@@ -1,0 +1,27 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+
+
+model Movie {
+    id          Int      @id @default(autoincrement()) // only for demo, for production better to use uuid
+    title       String
+    description String
+    rating      Float
+    releaseDate String   /// only for demo, for production i'll will use DateTime 
+    genre       String[]
+    actors      String[]
+    director    String
+    image       String
+
+    @@index([title])
+}
