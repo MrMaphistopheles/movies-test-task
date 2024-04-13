@@ -132,7 +132,7 @@ export default function Edit({
           <input
             aria-label="Release Date"
             type="date"
-            placeholder="Release Date"
+            placeholder="dd/mm/yyyy"
             id="releaseDate"
             defaultValue={data?.releaseDate ?? ""}
             className="appearance-none rounded-xl border-2 border-black bg-transparent px-4 py-2 text-sm leading-tight focus:outline-none"
