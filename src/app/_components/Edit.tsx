@@ -7,16 +7,9 @@ import GlassBtn from "./ui/GlassBtn";
 import { type Movie } from "@prisma/client";
 import File from "~/assets/svg/File";
 
-type Data = {
-  id: number;
-  title: string;
-  description: string;
-  rating: number;
-  releaseDate: string;
+type TData = Omit<Movie, "genre" | "actors" | "favorite"> & {
   genre: string;
   actors: string;
-  director: string;
-  image: string;
 };
 
 export default function Edit({
@@ -25,7 +18,7 @@ export default function Edit({
   id,
   data,
 }: {
-  mutate: (obj: Data) => void;
+  mutate: (obj: TData) => void;
   isPending: boolean;
   id?: number;
   data?: Movie | null;
@@ -37,7 +30,7 @@ export default function Edit({
     const formData = new FormData(e.currentTarget); // FormData object
     const data = Object.fromEntries(formData); // Object
 
-    const sendData: Data = {
+    const sendData: TData = {
       rating,
       id: id ?? 0,
       title: data.title as string,
@@ -97,15 +90,7 @@ export default function Edit({
           defaultValue={data?.description ?? ""}
           name="description"
         />
-        <input
-          aria-label="Release Date"
-          type="date"
-          placeholder="Release Date"
-          id="releaseDate"
-          defaultValue={data?.releaseDate ?? ""}
-          className="text-b w-full min-w-0 rounded-lg border-2 border-black bg-transparent p-2 placeholder-gray-700 outline-none"
-          name="releaseDate"
-        />
+
         <input
           aria-label="Genre"
           placeholder="Genre"
@@ -130,15 +115,28 @@ export default function Edit({
           className="text-b w-full min-w-0 rounded-lg border-2 border-black bg-transparent p-2 placeholder-gray-700 outline-none"
           name="director"
         />
-        <GlassBtn width="6.5" padding="1">
-          {isPending ? (
-            "Loading..."
-          ) : (
-            <div className="flex items-center justify-center gap-1">
-              <File /> <p className="font-bold"> Save</p>
-            </div>
-          )}
-        </GlassBtn>
+
+        <fieldset className="flex gap-2">
+          <input
+            aria-label="Release Date"
+            type="date"
+            placeholder="Release Date"
+            id="releaseDate"
+            defaultValue={data?.releaseDate ?? ""}
+            className="appearance-none rounded-xl border-2 border-black bg-transparent px-4 py-2 text-sm leading-tight focus:outline-none"
+            name="releaseDate"
+          />
+
+          <GlassBtn padding="0.7">
+            {isPending ? (
+              "Loading..."
+            ) : (
+              <div className="flex items-center justify-center gap-1">
+                <File /> <p className="font-bold"> Save</p>
+              </div>
+            )}
+          </GlassBtn>
+        </fieldset>
       </form>
     </div>
   );
