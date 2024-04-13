@@ -14,7 +14,7 @@ export default function NavBar({
   return (
     <nav className="flex w-full items-center justify-center gap-3 py-4 text-white">
       <Input
-        label="Search"
+        aria-label="Search"
         isClearable
         radius="lg"
         placeholder="Type to search..."
@@ -26,7 +26,7 @@ export default function NavBar({
         }
       />
       <Link href="/add-movie">
-        <GlassBtn>
+        <GlassBtn padding="0.55">
           <Add />
         </GlassBtn>
       </Link>

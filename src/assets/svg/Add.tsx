@@ -1,7 +1,7 @@
 export default function Add() {
   return (
     <svg
-      className="h-10 w-10 text-white"
+      className="h-6 w-6 text-white"
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       width="24"

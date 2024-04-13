@@ -2,12 +2,12 @@
 import Image from "next/image";
 import { api } from "~/trpc/react";
 import { Button } from "@nextui-org/react";
-import GlassBtn from "./ui/GlassBtn";
+import GlassBtn from "../../_components/ui/GlassBtn";
 import Star from "~/assets/svg/Star";
-import Edit from "../../assets/svg/Edit";
-import TrashBin from "../../assets/svg/TrashBin";
+import Edit from "../../../assets/svg/Edit";
+import TrashBin from "../../../assets/svg/TrashBin";
 import { useRouter } from "next/navigation";
-import LoadingSpiner from "./LoadingSpiner";
+import LoadingSpiner from "../../_components/LoadingSpiner";
 import Link from "next/link";
 
 export default function Movie({ id }: { id: string }) {
@@ -48,7 +48,7 @@ export default function Movie({ id }: { id: string }) {
   }
 
   return (
-    <div className="flex h-[100dvh] w-full flex-col items-center justify-between px-4 py-5  text-lg text-white">
+    <div className="flex h-[97dvh] w-full flex-col items-center justify-between px-4 py-5  text-lg text-white">
       <div className="flex w-full max-w-[30em] flex-col items-center justify-start gap-4 overflow-auto py-3">
         <Image
           src={
@@ -63,7 +63,7 @@ export default function Movie({ id }: { id: string }) {
         <h1 className="text-2xl font-bold text-white">{data?.title}</h1>
 
         <span className="flex w-full items-center gap-2">
-          <p>Rating: {data?.rating}</p> <Star color="#ffd500" />
+          <p>Rating: {data?.rating}</p> <Star color="#fff" />
         </span>
 
         <span className="flex w-full  items-center gap-2">
@@ -114,7 +114,7 @@ export default function Movie({ id }: { id: string }) {
             </Link>
 
             <GlassBtn onClick={() => handleTogle(data?.id)}>
-              <Star color={data?.favorite === true ? "#ffcc00" : "white"} />
+              <Star color={data?.favorite === true ? "#c420d6" : "white"} />
             </GlassBtn>
           </div>
         </div>
@@ -123,6 +123,7 @@ export default function Movie({ id }: { id: string }) {
   );
 }
 
+/// Helper function to format the date
 function toLocaleDateString(date: string) {
   return new Date(date).toLocaleDateString();
 }

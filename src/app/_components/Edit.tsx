@@ -5,9 +5,9 @@ import React, { useState } from "react";
 import Star from "~/assets/svg/Star";
 import GlassBtn from "./ui/GlassBtn";
 import { type Movie } from "@prisma/client";
+import File from "~/assets/svg/File";
 
 type Data = {
-  id: number;
   title: string;
   description: string;
   rating: number;
@@ -17,6 +17,8 @@ type Data = {
   director: string;
   image: string;
 };
+
+type WithId<T> = T & { id: number };
 
 export default function Edit({
   mutate,
@@ -36,30 +38,48 @@ export default function Edit({
     const formData = new FormData(e.currentTarget); // FormData object
     const data = Object.fromEntries(formData); // Object
 
-    const sendData: Data = {
-      rating,
-      id: id ?? 0,
-      title: data.title as string,
-      description: data.description as string,
-      releaseDate: data.releaseDate as string,
-      genre: data.genre as string,
-      actors: data.actors as string,
-      director: data.director as string,
-      image: data.image as string,
-    }; // add rating to data
+    if (id) {
+      const sendData: WithId<Data> = {
+        rating,
+        id: id,
+        title: data.title as string,
+        description: data.description as string,
+        releaseDate: data.releaseDate as string,
+        genre: data.genre as string,
+        actors: data.actors as string,
+        director: data.director as string,
+        image: data.image as string,
+      }; // add rating to data
 
-    mutate(sendData); // send data to the server
+      mutate(sendData); // send data to the server
+    }
+
+    if (!id) {
+      const sendData: Data = {
+        rating,
+        title: data.title as string,
+        description: data.description as string,
+        releaseDate: data.releaseDate as string,
+        genre: data.genre as string,
+        actors: data.actors as string,
+        director: data.director as string,
+        image: data.image as string,
+      }; // add rating to data
+
+      mutate(sendData); // send data to the server
+    }
   };
 
   return (
     <div className="flex h-[100dvh] w-full flex-col items-center justify-center gap-2">
       <form
-        className="flex w-10/12 max-w-[30em] flex-col items-center justify-center gap-2 text-white"
+        className="text-b flex w-10/12 max-w-[30em] flex-col items-center justify-center gap-3"
         onSubmit={handleSubmit}
+        aria-label="Edit Movie Form"
       >
         <input
           aria-label="Image URL"
-          className="w-full min-w-0 rounded-lg border-2 border-white bg-transparent p-2 text-white"
+          className="text-b w-full min-w-0 rounded-lg border-2 border-black bg-transparent p-2 placeholder-gray-700 outline-none"
           defaultValue={data?.image ?? ""}
           id="image"
           name="image"
@@ -71,10 +91,10 @@ export default function Edit({
           id="title"
           name="title"
           placeholder="Title"
-          className="w-full min-w-0 rounded-lg border-2 border-white bg-transparent p-2 text-white"
+          className="text-b w-full min-w-0 rounded-lg border-2 border-black bg-transparent p-2 placeholder-gray-700 outline-none"
         />
-        <span className="flex w-full items-center justify-end gap-1 text-white">
-          <p className="text-lg"> {rating}</p> <Star color="#ffcc00" />
+        <span className="text-b flex w-full items-center justify-end gap-1">
+          <p className="text-lg"> {rating}</p> <Star color="#fff" />
         </span>
         <Slider
           aria-label="Rating"
@@ -90,7 +110,7 @@ export default function Edit({
         <textarea
           aria-label="description"
           placeholder="Description"
-          className="w-full min-w-0 rounded-lg border-2 border-white bg-transparent p-2 text-white"
+          className="text-b w-full min-w-0 rounded-lg border-2 border-black bg-transparent p-2 placeholder-gray-700 outline-none"
           id="description"
           defaultValue={data?.description ?? ""}
           name="description"
@@ -101,7 +121,7 @@ export default function Edit({
           placeholder="Release Date"
           id="releaseDate"
           defaultValue={data?.releaseDate ?? ""}
-          className="w-full min-w-0 rounded-lg border-2 border-white bg-transparent p-2 text-white"
+          className="text-b w-full min-w-0 rounded-lg border-2 border-black bg-transparent p-2 placeholder-gray-700 outline-none"
           name="releaseDate"
         />
         <input
@@ -109,30 +129,33 @@ export default function Edit({
           placeholder="Genre"
           id="genre"
           name="genre"
-          defaultValue={data?.genre ?? ""}
-          className="w-full min-w-0 rounded-lg border-2 border-white bg-transparent p-2 text-white"
-          onChange={(e) => console.log(e.target.value.split(" "))}
+          defaultValue={data?.genre.join().replace(/,/g, " ") ?? ""}
+          className="text-b w-full min-w-0 rounded-lg border-2 border-black bg-transparent p-2 placeholder-gray-700 outline-none"
         />
         <input
           aria-label="Actors"
           placeholder="Actors"
           id="actors"
           name="actors"
-          defaultValue={data?.actors ?? ""}
-          className="w-full min-w-0 rounded-lg border-2 border-white bg-transparent p-2 text-white"
-          onChange={(e) => console.log(e.target.value.split(" "))}
+          defaultValue={data?.actors.join().replace(/,/g, " ") ?? ""}
+          className="text-b w-full min-w-0 rounded-lg border-2 border-black bg-transparent p-2 placeholder-gray-700 outline-none"
         />
         <input
           aria-label="Director"
           placeholder="Director"
           id="director"
           defaultValue={data?.director ?? ""}
-          className="w-full min-w-0 rounded-lg border-2 border-white bg-transparent p-2 text-white"
+          className="text-b w-full min-w-0 rounded-lg border-2 border-black bg-transparent p-2 placeholder-gray-700 outline-none"
           name="director"
-          onChange={(e) => console.log(e.target.value)}
         />
-        <GlassBtn width="6" padding="3">
-          {isPending ? "Loading..." : "Save"}
+        <GlassBtn width="6.5" padding="1">
+          {isPending ? (
+            "Loading..."
+          ) : (
+            <div className="flex items-center justify-center gap-1">
+              <File /> <p className="font-bold"> Save</p>
+            </div>
+          )}
         </GlassBtn>
       </form>
     </div>

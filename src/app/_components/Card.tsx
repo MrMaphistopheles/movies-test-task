@@ -12,7 +12,7 @@ export default function Card({
   movie: Movie | undefined | null;
   refetch: () => void;
 }) {
-  // Fetch the movie data
+  // Delete the movie
   const { mutate, isPending, isError } = api.movie.deleteMovie.useMutation({
     onSuccess: () => {
       refetch();
@@ -41,12 +41,13 @@ export default function Card({
   return (
     <div className=" flex h-[30em] items-center justify-between rounded-xl">
       <Image
+        priority={true}
         src={
           movie?.image ??
           "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png"
         }
         width={320}
-        height={370}
+        height={420}
         alt={`${movie?.title} image`}
         className="h-auto rounded-xl object-cover"
       />
@@ -69,7 +70,7 @@ export default function Card({
                 {isPending ? "Deleting..." : "Delete"}
               </GlassBtn>
               <GlassBtn onClick={() => handleTogle(movie?.id)}>
-                <Star color={movie?.favorite === true ? "#ffcc00" : "white"} />
+                <Star color={movie?.favorite === true ? "#c420d6" : "white"} />
               </GlassBtn>
             </div>
           </div>

@@ -6,6 +6,7 @@ export default function GlassBtn({
   transform,
   width,
   padding,
+  radius,
 }: {
   children: React.ReactNode;
   onClick?: () => void;
@@ -14,6 +15,7 @@ export default function GlassBtn({
   transform?: string;
   width?: string;
   padding?: string;
+  radius?: string;
 }) {
   return (
     <button
@@ -24,7 +26,8 @@ export default function GlassBtn({
         position: position ?? "relative",
         transform: transform ?? "none",
         width: `${width}rem` ?? `auto`,
-        padding: `0.8rem ${padding}rem` ?? "0.5rem",
+        padding: `${padding}rem` ?? "0.5rem",
+        borderRadius: `${radius}rem` ?? "0.75rem",
       }}
     >
       {children}

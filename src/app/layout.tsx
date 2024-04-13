@@ -24,10 +24,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`font-sans ${inter.variable} h-full min-h-[100dvh] overflow-y-auto bg-black`}
+        className={`font-sans ${inter.variable} h-full min-h-[100dvh] bg-yellow-500`}
       >
         <Providers>
-          <main className="flex flex-col items-start justify-center ">
+          <main className="flex flex-col items-start justify-center py-5">
             <TRPCReactProvider>{children}</TRPCReactProvider>
           </main>
         </Providers>
