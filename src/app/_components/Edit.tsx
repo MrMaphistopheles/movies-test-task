@@ -8,6 +8,7 @@ import { type Movie } from "@prisma/client";
 import File from "~/assets/svg/File";
 
 type Data = {
+  id: number;
   title: string;
   description: string;
   rating: number;
@@ -17,8 +18,6 @@ type Data = {
   director: string;
   image: string;
 };
-
-type WithId<T> = T & { id: number };
 
 export default function Edit({
   mutate,
@@ -38,36 +37,19 @@ export default function Edit({
     const formData = new FormData(e.currentTarget); // FormData object
     const data = Object.fromEntries(formData); // Object
 
-    if (id) {
-      const sendData: WithId<Data> = {
-        rating,
-        id: id,
-        title: data.title as string,
-        description: data.description as string,
-        releaseDate: data.releaseDate as string,
-        genre: data.genre as string,
-        actors: data.actors as string,
-        director: data.director as string,
-        image: data.image as string,
-      }; // add rating to data
+    const sendData: Data = {
+      rating,
+      id: id ?? 0,
+      title: data.title as string,
+      description: data.description as string,
+      releaseDate: data.releaseDate as string,
+      genre: data.genre as string,
+      actors: data.actors as string,
+      director: data.director as string,
+      image: data.image as string,
+    }; // add rating to data
 
-      mutate(sendData); // send data to the server
-    }
-
-    if (!id) {
-      const sendData: Data = {
-        rating,
-        title: data.title as string,
-        description: data.description as string,
-        releaseDate: data.releaseDate as string,
-        genre: data.genre as string,
-        actors: data.actors as string,
-        director: data.director as string,
-        image: data.image as string,
-      }; // add rating to data
-
-      mutate(sendData); // send data to the server
-    }
+    mutate(sendData); // send data to the server
   };
 
   return (
