@@ -21,7 +21,7 @@ export default function Movie({ id }: { id: string }) {
 
   // Delete the movie data
   const { mutate, isPending, isError } = api.movie.deleteMovie.useMutation({
-    onSuccess: async () => {
+    onSuccess: () => {
       router.push("/");
     },
   });
