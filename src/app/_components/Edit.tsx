@@ -7,18 +7,7 @@ import GlassBtn from "./ui/GlassBtn";
 import { type Movie } from "@prisma/client";
 import File from "~/assets/svg/File";
 
-/* type Data = {
-  id: number;
-  title: string;
-  description: string;
-  rating: number;
-  releaseDate: string;
-  genre: string;
-  actors: string;
-  director: string;
-  image: string;
-};
- */
+
 type TData = Omit<Movie, "genre" | "actors" | "favorite"> & {
   genre: string;
   actors: string;
